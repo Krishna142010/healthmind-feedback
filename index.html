@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HealthMind AI - Feedback Form</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,900;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-dark: #1a3d2b;
+    --green-mid: #2d6a4f;
+    --green-light: #52b788;
+    --green-pale: #d8f3dc;
+    --cream: #f8f4e8;
+    --text: #1a1a1a;
+    --text-light: #666;
+    --white: #ffffff;
+    --shadow: 0 8px 40px rgba(26,61,43,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    min-height: 100vh;
+    color: var(--text);
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 20% 20%, rgba(82,183,136,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(45,106,79,0.06) 0%, transparent 50%);
+    animation: bgPulse 8s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes bgPulse {
+    0% { transform: scale(1) rotate(0deg); }
+    100% { transform: scale(1.1) rotate(3deg); }
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.8s ease forwards;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--green-dark);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 50px;
+    margin-bottom: 24px;
+    font-size: 0.85em;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .logo-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--green-light);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 2.8em;
+    font-weight: 900;
+    color: var(--green-dark);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  h1 span {
+    color: var(--green-mid);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .subtitle {
+    color: var(--text-light);
+    font-size: 1em;
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .built-by {
+    display: inline-block;
+    margin-top: 16px;
+    background: var(--green-pale);
+    color: var(--green-dark);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 500;
+  }
+
+  /* Form Card */
+  .form-card {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(82,183,136,0.15);
+    animation: fadeUp 0.8s ease 0.2s forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--green-dark);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--green-pale);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: var(--green-light);
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  .form-group {
+    margin-bottom: 24px;
+  }
+
+  label {
+    display: block;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  label span.required {
+    color: #e63946;
+    margin-left: 3px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95em;
+    color: var(--text);
+    background: #fafafa;
+    transition: all 0.2s ease;
+    outline: none;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--green-light);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(82,183,136,0.1);
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.6;
+  }
+
+  /* Star Rating */
+  .star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 4px;
+    justify-content: flex-end;
+  }
+
+  .star-rating input {
+    display: none;
+  }
+
+  .star-rating label {
+    font-size: 2em;
+    cursor: pointer;
+    color: #ddd;
+    transition: color 0.2s;
+    margin: 0;
+  }
+
+  .star-rating input:checked ~ label,
+  .star-rating label:hover,
+  .star-rating label:hover ~ label {
+    color: #f4a261;
+  }
+
+  /* Radio/Checkbox groups */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .option-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #fafafa;
+  }
+
+  .option-item:hover {
+    border-color: var(--green-light);
+    background: var(--green-pale);
+  }
+
+  .option-item input[type="radio"],
+  .option-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--green-mid);
+    cursor: pointer;
+  }
+
+  .option-item input:checked + span {
+    color: var(--green-dark);
+    font-weight: 500;
+  }
+
+  .option-item:has(input:checked) {
+    border-color: var(--green-mid);
+    background: var(--green-pale);
+  }
+
+  .option-item span {
+    font-size: 0.9em;
+    color: var(--text);
+  }
+
+  /* Scale rating */
+  .scale-rating {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .scale-rating input[type="radio"] {
+    display: none;
+  }
+
+  .scale-rating label {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: all 0.2s;
+    background: #fafafa;
+    margin: 0;
+  }
+
+  .scale-rating input:checked + label {
+    background: var(--green-mid);
+    color: white;
+    border-color: var(--green-mid);
+  }
+
+  .scale-rating label:hover {
+    border-color: var(--green-light);
+    background: var(--green-pale);
+  }
+
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78em;
+    color: var(--text-light);
+    margin-top: 6px;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: var(--green-pale);
+    margin: 32px 0;
+  }
+
+  /* Submit button */
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--green-dark);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.02em;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+  }
+
+  .submit-btn:hover {
+    background: var(--green-mid);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(45,106,79,0.3);
+  }
+
+  .submit-btn:hover::before {
+    left: 100%;
+  }
+
+  .submit-btn:active {
+    transform: translateY(0);
+  }
+
+  /* Success message */
+  .success-msg {
+    display: none;
+    text-align: center;
+    padding: 40px;
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .success-icon {
+    font-size: 4em;
+    margin-bottom: 16px;
+    animation: bounceIn 0.6s ease;
+  }
+
+  @keyframes bounceIn {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
+  .success-msg h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.8em;
+    color: var(--green-dark);
+    margin-bottom: 12px;
+  }
+
+  .success-msg p {
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 32px;
+    color: var(--text-light);
+    font-size: 0.82em;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+    opacity: 0;
+  }
+
+  .footer a {
+    color: var(--green-mid);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 2em; }
+    .form-card { padding: 24px; }
+    .options-grid { grid-template-columns: 1fr; }
+    .scale-rating label { width: 34px; height: 34px; font-size: 0.8em; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      HealthMind AI — User Feedback
+    </div>
+    <h1>Help Us <span>Improve</span><br>Your Health AI</h1>
+    <p class="subtitle">Your feedback helps HealthMind become better for 800 million Indians who need accessible medical information.</p>
+    <div class="built-by">🇮🇳 Built by Krishna Bansal, Village Firozpur, Sambhal, UP</div>
+  </div>
+
+  <!-- Form -->
+  <div class="form-card" id="formCard">
+    <form id="feedbackForm">
+
+      <!-- Section 1: About You -->
+      <div class="section-title">About You</div>
+
+      <div class="form-group">
+        <label>Your Name <span class="required">*</span></label>
+        <input type="text" name="name" placeholder="Enter your full name" required>
+      </div>
+
+      <div class="form-group">
+        <label>Your Age</label>
+        <input type="number" name="age" placeholder="e.g. 35" min="5" max="100">
+      </div>
+
+      <div class="form-group">
+        <label>Where are you from?</label>
+        <input type="text" name="location" placeholder="Village / City, State">
+      </div>
+
+      <div class="form-group">
+        <label>Your Occupation</label>
+        <div class="options-grid">
+          <label class="option-item"><input type="radio" name="occupation" value="Student"> <span>Student</span></label>
+          <label class="option-item"><input type="radio" name="occupation" value="Teacher"> <span>Teacher</span></label>
+          <label class="option-item"><input type="radio" name="occupation" value="Doctor/Healthcare"> <span>Doctor / Healthcare</span></label>
+          <label class="option-item"><input type="radio" name="occupation" value="Farmer"> <span>Farmer</span></label>
+          <label class="option-item"><input type="radio" name="occupation" value="Business"> <span>Business</span></label>
+          <label class="option-item"><input type="radio" name="occupation" value="Other"> <span>Other</span></label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Section 2: Your Experience -->
+      <div class="section-title">Your Experience</div>
+
+      <div class="form-group">
+        <label>What health question did you ask HealthMind? <span class="required">*</span></label>
+        <textarea name="question_asked" placeholder="e.g. What are the symptoms of diabetes?" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Was the answer helpful? <span class="required">*</span></label>
+        <div class="options-grid">
+          <label class="option-item"><input type="radio" name="helpful" value="Very helpful" required> <span>✅ Very Helpful</span></label>
+          <label class="option-item"><input type="radio" name="helpful" value="Somewhat helpful"> <span>🙂 Somewhat Helpful</span></label>
+          <label class="option-item"><input type="radio" name="helpful" value="Not helpful"> <span>😐 Not Helpful</span></label>
+          <label class="option-item"><input type="radio" name="helpful" value="Wrong answer"> <span>❌ Wrong Answer</span></label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Was the answer medically accurate?</label>
+        <div class="options-grid">
+          <label class="option-item"><input type="radio" name="accurate" value="Yes completely"> <span>✅ Yes, Completely</span></label>
+          <label class="option-item"><input type="radio" name="accurate" value="Mostly accurate"> <span>🙂 Mostly Accurate</span></label>
+          <label class="option-item"><input type="radio" name="accurate" value="Partially accurate"> <span>😐 Partially Accurate</span></label>
+          <label class="option-item"><input type="radio" name="accurate" value="Not accurate"> <span>❌ Not Accurate</span></label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>How easy was it to understand the answer?</label>
+        <div class="scale-rating">
+          <input type="radio" name="understand" id="u1" value="1"><label for="u1">1</label>
+          <input type="radio" name="understand" id="u2" value="2"><label for="u2">2</label>
+          <input type="radio" name="understand" id="u3" value="3"><label for="u3">3</label>
+          <input type="radio" name="understand" id="u4" value="4"><label for="u4">4</label>
+          <input type="radio" name="understand" id="u5" value="5"><label for="u5">5</label>
+          <input type="radio" name="understand" id="u6" value="6"><label for="u6">6</label>
+          <input type="radio" name="understand" id="u7" value="7"><label for="u7">7</label>
+          <input type="radio" name="understand" id="u8" value="8"><label for="u8">8</label>
+          <input type="radio" name="understand" id="u9" value="9"><label for="u9">9</label>
+          <input type="radio" name="understand" id="u10" value="10"><label for="u10">10</label>
+        </div>
+        <div class="scale-labels">
+          <span>Very Difficult</span>
+          <span>Very Easy</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Section 3: Overall Rating -->
+      <div class="section-title">Overall Rating</div>
+
+      <div class="form-group">
+        <label>Rate HealthMind overall <span class="required">*</span></label>
+        <div class="star-rating">
+          <input type="radio" name="rating" id="s5" value="5" required><label for="s5">★</label>
+          <input type="radio" name="rating" id="s4" value="4"><label for="s4">★</label>
+          <input type="radio" name="rating" id="s3" value="3"><label for="s3">★</label>
+          <input type="radio" name="rating" id="s2" value="2"><label for="s2">★</label>
+          <input type="radio" name="rating" id="s1" value="1"><label for="s1">★</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Would you recommend HealthMind to others?</label>
+        <div class="options-grid">
+          <label class="option-item"><input type="radio" name="recommend" value="Definitely yes"> <span>💯 Definitely Yes</span></label>
+          <label class="option-item"><input type="radio" name="recommend" value="Probably yes"> <span>👍 Probably Yes</span></label>
+          <label class="option-item"><input type="radio" name="recommend" value="Not sure"> <span>🤔 Not Sure</span></label>
+          <label class="option-item"><input type="radio" name="recommend" value="No"> <span>👎 No</span></label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Would you use HealthMind in Hindi if available?</label>
+        <div class="options-grid">
+          <label class="option-item"><input type="radio" name="hindi" value="Yes definitely"> <span>✅ हाँ, ज़रूर!</span></label>
+          <label class="option-item"><input type="radio" name="hindi" value="Yes maybe"> <span>🙂 शायद हाँ</span></label>
+          <label class="option-item"><input type="radio" name="hindi" value="English is fine"> <span>English is fine</span></label>
+          <label class="option-item"><input type="radio" name="hindi" value="No"> <span>No</span></label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Section 4: Open Feedback -->
+      <div class="section-title">Your Suggestions</div>
+
+      <div class="form-group">
+        <label>What did you like most about HealthMind?</label>
+        <textarea name="liked" placeholder="Tell us what worked well..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>What should we improve?</label>
+        <textarea name="improve" placeholder="Any suggestions for improvement..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Any other comments?</label>
+        <textarea name="other" placeholder="Anything else you want to share..."></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit Feedback →</button>
+
+    </form>
+
+    <!-- Success Message -->
+    <div class="success-msg" id="successMsg">
+      <div class="success-icon">🎉</div>
+      <h2>Thank You!</h2>
+      <p>Your feedback helps HealthMind improve for millions of Indians who need accessible medical information.</p>
+      <br>
+      <p style="color: var(--green-mid); font-weight: 500;">🇮🇳 Built with ❤️ from Village Firozpur, Sambhal, UP</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>HealthMind AI - 2.61 Billion Parameter Medical AI</p>
+    <p style="margin-top: 6px;">Try it at <a href="https://b632a7cfb19d6f8fa7.gradio.live/" target="_blank">huggingface.co/spaces/Krishna142010/healthmind-ai</a></p>
+  </div>
+</div>
+
+<script>
+  const SHEET_URL = 'https://script.google.com/macros/s/AKfycbw1yYFr3oRWlQmeQFsRnbZtT3LiEXdXw50TnJy8uU2yu83aKMmAreLMMRbWmmea3auOgg/exec';
+
+  document.getElementById('feedbackForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // Collect all form data
+    const formData = new FormData(this);
+    const data = {};
+    for (let [key, value] of formData.entries()) {
+      data[key] = value;
+    }
+
+    // Add timestamp
+    data.timestamp = new Date().toLocaleString('en-IN', {timeZone: 'Asia/Kolkata'});
+
+    // Disable button while submitting
+    const btn = document.querySelector('.submit-btn');
+    btn.textContent = 'Submitting...';
+    btn.disabled = true;
+
+    try {
+      // Send to Google Sheets
+      await fetch(SHEET_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      // Show success
+      document.getElementById('feedbackForm').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+
+    } catch (error) {
+      console.error('Error:', error);
+      document.getElementById('feedbackForm').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+    }
+  });
+</script>
+
+</body>
+</html>
